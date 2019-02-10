@@ -69,6 +69,32 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
   // add roundScore to the total score of the active Player
 
   scores[activePlayer] += roundScore;
+
+  // show total score in UI as well
+
+  document.getElementById('score-' + activePlayer).textContent =
+    scores[activePlayer];
+
+  // Implement winncondition
+
+  if (scores[activePlayer] >= 20) {
+    //if score of the player who chose to hold is 20 or above, they win and class 'winner' is added
+    document.getElementById('name-' + activePlayer).textContent = 'Winner!';
+
+    document
+      .querySelector('.player-' + activePlayer + '-panel')
+      .classList.add('winner');
+
+    document
+      .querySelector('.player-' + activePlayer + '-panel')
+      .classList.remove('active');
+
+    diceObject.style.display = 'none';
+  } else {
+    // or else go to next player
+
+    nextPlayer();
+  }
 });
 
 function nextPlayer() {
