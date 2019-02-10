@@ -56,11 +56,38 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
     // display it to the UI as well
 
     document.getElementById('current-' + activePlayer).textContent = roundScore;
+  } else {
+    // othersie go to the next player and set roundScore to 0
+
+    nextPlayer();
   }
 });
 
 // implement hold button now
 
 document.querySelector('.btn-hold').addEventListener('click', function() {
-  // add roundScore to the
+  // add roundScore to the total score of the active Player
+
+  scores[activePlayer] += roundScore;
 });
+
+function nextPlayer() {
+  activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
+
+  roundScore = 0;
+
+  //set roundScore to 0 in UI as well:
+
+  document.getElementById('current-0').textContent = 0;
+
+  document.getElementById('current-1').textContent = 0;
+
+  // remove dice from the window
+
+  diceObject.style.display = 'none';
+
+  // take care of active class
+
+  document.querySelector('.player-0-panel').classList.toggle('active');
+  document.querySelector('.player-1-panel').classList.toggle('active');
+}
