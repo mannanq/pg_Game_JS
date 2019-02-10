@@ -9,30 +9,15 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activePlayer, diceDOM;
+var scores, roundScore, activePlayer, diceObject;
 
-scores = [0, 0];
-roundScore = 0;
-activePlayer = 0;
+// define diceObject to be re-used later
 
-// no dice when game begins
-var diceObject = document.querySelector('.dice');
+diceObject = document.querySelector('.dice');
 
-diceObject.style.display = 'none';
+init();
 
-//Set everything to 0:
-
-//Global score for each player
-
-document.getElementById('score-0').textContent = 0;
-document.getElementById('score-1').textContent = 0;
-
-//roundScore for each player
-
-document.getElementById('current-0').textContent = 0;
-document.getElementById('current-1').textContent = 0;
-
-//define dice object so it could eb selected in the roll dice event listener below
+//define dice object so it could be selected in the roll dice event listener below
 
 // roll dice event listener
 
@@ -75,10 +60,10 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
   document.getElementById('score-' + activePlayer).textContent =
     scores[activePlayer];
 
-  // Implement winncondition
+  // Implement win condition
 
   if (scores[activePlayer] >= 20) {
-    //if score of the player who chose to hold is 20 or above, they win and class 'winner' is added
+    //if score of the player who chose to hold is 20 or above, they win and class 'winner' is added and hide the dice
     document.getElementById('name-' + activePlayer).textContent = 'Winner!';
 
     document
@@ -91,7 +76,7 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
 
     diceObject.style.display = 'none';
   } else {
-    // or else go to next player
+    // or else go to next player i.e. keep playing
 
     nextPlayer();
   }
@@ -100,13 +85,14 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
 function nextPlayer() {
   activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
 
+  // set roundScore to 0
   roundScore = 0;
 
   //set roundScore to 0 in UI as well:
 
-  document.getElementById('current-0').textContent = 0;
+  document.getElementById('current-0').textContent = '0';
 
-  document.getElementById('current-1').textContent = 0;
+  document.getElementById('current-1').textContent = '0';
 
   // remove dice from the window
 
@@ -116,4 +102,43 @@ function nextPlayer() {
 
   document.querySelector('.player-0-panel').classList.toggle('active');
   document.querySelector('.player-1-panel').classList.toggle('active');
+}
+
+//Implement the new game button
+
+// Run init function when clicked
+document.querySelector('.btn-new').addEventListener('click', init);
+
+function init() {
+  scores = [0, 0];
+  roundScore = 0;
+  activePlayer = 0;
+
+  // no dice when game begins
+
+  diceObject.style.display = 'none';
+
+  //Set everything to 0:
+
+  //Global score for each player
+
+  document.getElementById('score-0').textContent = '0';
+  document.getElementById('score-1').textContent = '0';
+
+  //roundScore for each player
+
+  document.getElementById('current-0').textContent = '0';
+  document.getElementById('current-1').textContent = '0';
+
+  // take care of classes
+
+  document.querySelector('.player-0-panel').classList.remove('winner');
+  document.querySelector('.player-1-panel').classList.remove('winner');
+
+  document.querySelector('.player-0-panel').classList.remove('active');
+  document.querySelector('.player-1-panel').classList.remove('active');
+  document.querySelector('.player-0-panel').classList.add('active');
+
+  document.getElementById('name-0').textContent = 'Player 1';
+  document.getElementById('name-1').textContent = 'Player 2';
 }
